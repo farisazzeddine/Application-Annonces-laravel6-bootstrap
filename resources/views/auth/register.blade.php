@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="container">
+<div class="container pt-5">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -100,18 +100,11 @@
                                 <input  type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"  required><small>  Format: 123-456-7890</small>
                             </div>
                             <div class="col-md-12">
-                                <label for="is_delete" class="col-md-4 col-form-label text-md-right">{{ __('Delete') }}</label>
-                                      <input type="radio" aria-label="Radio button for following text input" name="delet" value="1">
-                                <label for="is_admin" class="col-md-2 col-form-label text-md-right">{{ __('Admin') }}</label>
-                                      <input type="radio" aria-label="Radio button for following text input" name="admin" value="1">
-                                <label for="is_member" class="col-md-2 col-form-label text-md-right">{{ __('Member') }}</label>
-                                      <input type="radio" aria-label="Radio button for following text input" name="member" value="1">
+                                      <input type="hidden" aria-label="Radio button for following text input" name="delet" value="0">
+                                      <input type="hidden" aria-label="Radio button for following text input" name="admin" value="0">
+                                      <input type="hidden" aria-label="Radio button for following text input" name="member" value="1">
                             </div>
-
                         </div>
-
-
-
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button style="float:right;" type="submit" class="btn btn-primary">

@@ -15,13 +15,17 @@ class AnnonceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-public function accueil(){
+    public function __construct()
+    {
+        $this->middleware('auth')->except('accueil','show','search');
 
+    }
+    public function accueil(){
     $categories=Category::all();
     $cities=City::all();
     $annonces=Annonce::OrderBy('id','DESC')->paginate(10);
     return view('annonces.accueil', compact('annonces','categories','cities'))->with('i',(request()->input('page', 1) - 1) * 10);
-}
+    }
 
 /**
      * Display a listing of the resource.
@@ -30,9 +34,14 @@ public function accueil(){
      */
     public function index()
     {
-
-        $annonces=Annonce::OrderBy('id','DESC')->paginate(5);
-        return view('annonces.dashbord', compact('annonces'))->with('i',(request()->input('page', 1) - 1) * 5);
+        $categories=Category::all();
+        $cities=City::all();
+        if(Auth::user()->is_admin) {
+            $annonces=Annonce::OrderBy('id','DESC')->paginate(5);
+        } else {
+            $annonces=Annonce::where('user_id',Auth::user()->id)->OrderBy('id','DESC')->paginate(5);
+        }
+        return view('annonces.dashbord', compact('annonces','categories','cities'))->with('i',(request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -56,18 +65,18 @@ public function accueil(){
      */
     public function store(Request $request)
     {
-        $id = Auth::id();
+
         $request->validate([
             'title'      =>  'required',
             'description'=>  'required',
-            'image1'    =>  'required|image|max:4048',
+            'image1'     =>  'required|image|max:4048',
             'image2'     =>  'required|image|max:4048',
             'image3'     =>  'required|image|max:4048',
             'image4'     =>  'required|image|max:4048',
             'city'       =>  'required',
             'category'   =>  'required',
-            'approved'=>  'required',
-            'prix'=>  'required',
+            'approved'   =>  'required',
+            'prix'       =>  'required',
         ]);
 
 
@@ -87,20 +96,20 @@ public function accueil(){
         $image4 = $request->file('image4');
     	$imageName4 = rand() . '.' . $image4->getClientOriginalExtension();
         request()->image4->move(public_path('storage'), $imageName4);
-
+        $id = Auth::id();
 
             $article=array(
-                'title'=>$request->title,
+                'title'      =>$request->title,
                 'description'=>$request->description,
-                'image1'=>$imageName1,
-                'image2'=>$imageName2,
-                'image3'=>$imageName3,
-                'image4'=>$imageName4,
-                'city_id'=> $request->city,
-                'category_id'=> $request->category,
-                'is_approved'=> $request->approved,
-                'price'=> $request->prix,
-                'user_id'=>$id,
+                'image1'     =>$imageName1,
+                'image2'     =>$imageName2,
+                'image3'     =>$imageName3,
+                'image4'     =>$imageName4,
+                'city_id'    =>$request->city,
+                'category_id'=>$request->category,
+                'is_approved'=>$request->approved,
+                'price'      =>$request->prix,
+                'user_id'    =>$id,
             );
             Annonce::create($article);
 
@@ -116,7 +125,7 @@ public function accueil(){
      */
     public function show(Annonce $annonce)
     {
-        $annonces=Annonce::where('annonces.id',$annonce->id)->first();
+        $annonces=Annonce::findOrFail($annonce->id);
         return view('annonces.show', compact('annonces'));
     }
 
@@ -128,9 +137,10 @@ public function accueil(){
      */
     public function edit(Annonce $annonce)
     {
-        $annonces=Annonce::where('annonces.id',$annonce->id)->first();
+        $annonces=Annonce::findOrFail($annonce->id);
         $categories=Category::all();
-         $cities=City::all();
+        $cities=City::all();
+        $this->authorize('update',$annonce);
          return view('annonces.edit', compact('annonces','categories','cities'));
     }
 
@@ -155,19 +165,19 @@ public function accueil(){
 $request->validate([
     'title'      =>  'required',
     'description'=>  'required',
-     'city'      =>  'required',
+    'city'       =>  'required',
     'category'   =>  'required',
-    'prix'   =>  'required',
+    'prix'       =>  'required',
     'approved'   =>  'required',
 ]);
  }
  $article=array(
-    'title'      =>$request->title,
-    'description'=>$request->description,
-    'image1'    =>$image_name,
-    'price'     => $request->prix,
-    'is_approved' => $request->approved,
-    'category_id' => $request->category,
+    'title'       =>$request->title,
+    'description' =>$request->description,
+    'image1'      =>$image_name,
+    'price'       =>$request->prix,
+    'is_approved' =>$request->approved,
+    'category_id' =>$request->category,
     'city_id'=> $request->city,
 );
      Annonce::whereId($annonce->id)->update($article);
@@ -191,13 +201,11 @@ $request->validate([
     public function search(){
         $categories=Category::all();
         $cities=City::all();
-      $search = \Request::get('search');
-      $annonces = Annonce::where('title','LIKE','%'.$search.'%')->orwhere('city_id','LIKE','%'.$search.'%')->get();
-       /* dd($annonces); */
-  /*   if($search !=''){
-    $annonces = Annonce::where('title','LIKE','%'.$search.'%')->get();
-         if(count($annonces)>0)*/
-         return view('annonces.search',compact('annonces','search','cities'));
+         $catego = \Request::get('category');
+        $search = \Request::get('search');
+        $annonces = Annonce::where('title','LIKE','%'.$search.'%')->get();
+         return view('annonces.search',compact('annonces','search','categories',
+         'cities'));
 
     }
 

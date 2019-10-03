@@ -1,9 +1,8 @@
 @extends('layouts.master')
 @section('content')
-<div class="card">
-        <div class="card-header col-md-12">
-            Dashboard
-        </div>
+<main class="pt-5 pb-3">
+<div >
+
         <br>
         @if($message = Session::get('success'))
         <div class="alert alert-success alert-dismissible fade show mr-3" role="alert">
@@ -18,19 +17,19 @@
 <div class="row">
     <div class="col-md-12">
         <div class="pull-right">
-            <marquee style="font-size:2em; color:red;" class="text-uppercase" behavior="" direction="">Weclome in dashbord DarkStore</marquee>
+                <h1 class="text-uppercase col-md-8">tableau de bord</h1>
+                <hr>
         </div>
-<br>
         <div align="right" class="pull-right col-md-12">
-        <a href="{{ route('annonces.create') }}" class="btn btn-lg btn-success mb-3">Ajouter nouvel article</a>
+                <a href="{{ route('annonces.create') }}" class="btn btn-lg btn-success mb-3">Ajouter nouvel article</a>
         </div>
-
     </div>
 </div>
-<br><br>
+<br>
+<div class="col-md-12 col-md-offset-1">
 
-<table class="table table-bordered">
-  <thead class="thead-dark">
+<table class="table table-hover table-responsive-md">
+  <thead>
     <tr>
         <th class="text-uppercase" width="50">#</th>
         <th class="text-uppercase" width="150">titre</th>
@@ -47,7 +46,7 @@
     <tr>
         <td>{{$annonce ->id}}</td>
         <td>{{$annonce ->title}}</td>
-        <td>{{$annonce ->description}}</td>
+        <td class="overflow-auto">{{substr($annonce ->description,0,250)}}</td>
         <td><img src="/storage/{{$annonce->image1}}" class="img-thumbnail"><br><span>Prix :</span>{{$annonce ->price}} DHM</td>
         <td>{{$annonce ->category->category}}</td>
         <td>{{$annonce ->city->city}}</td>
@@ -67,11 +66,12 @@
 </tbody>
   @endforeach
 </table>
+</div>
 {!!$annonces->links() !!}
 </div>
 </div>
 
-
+</main>
 
 
 

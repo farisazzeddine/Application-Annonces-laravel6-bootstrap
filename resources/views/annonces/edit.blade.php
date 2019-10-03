@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('content')
+<main class="py-5 pt-5">
 <div class="jumbotron text-center">
         <div align="right">
                 <a href="{{route('annonces.index')}}" class="btn btn-success"> Return</a>
@@ -83,8 +84,7 @@
                                                 </div>
                                                 </div>
                                              <div class="col-md-12 text-left">
-                                                    <label for="is_delete" class="col-md-4 col-form-label text-md-right">{{ __('approved') }}</label>
-                                                    <input type="radio" aria-label="Radio button for following text input" name="approved" value="{{$annonces ->is_approved}}">
+                                                    <input type="hidden" aria-label="Radio button for following text input" name="approved" value="{{$annonces ->is_approved}}">
                                                  </div>
 
                                                 <div class="form-group col-md-10">
@@ -98,4 +98,5 @@
                                                </div>
          </form>
 </div>
+</main>
 @endsection
