@@ -9,7 +9,7 @@
          <form method="POST" action="{{route('annonces.update', $annonces->id)}}" enctype="multipart/form-data">
             @csrf
             @method('PATCH');
-                                         <div class="col-6 text-left">
+                           <div class="col-6 text-left">
                                              <label for="titre">Titre *:</label>
                                              <input type="text" name="title" class="form-control" value="{{$annonces ->title}}">
                                          </div>
@@ -18,9 +18,9 @@
                                                 <label for="description">Description Article *:</label>
                                          <textarea class="form-control" name="description"  rows="2">{{$annonces ->description}}"</textarea>
                                          </div>
-
-                                         <div class="form-group col-md-8">
-                                                <div class="input-group mb-3">
+                                         
+                                            <div class="form-group col-md-8">
+                                                    <div class="input-group mb-3">
                                                      <div class="input-group-prepend">
                                                        <span class="input-group-text" >Images</span>
                                                      </div>

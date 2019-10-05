@@ -6,7 +6,6 @@
         <br>
         @if($message = Session::get('success'))
         <div class="alert alert-success alert-dismissible fade show mr-3" role="alert">
-                <p>{{$message}}</p>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -39,6 +38,7 @@
         <th class="text-uppercase" width="150">ville</th>
         <th class="text-uppercase" >utilisateur</th>
         <th class="text-uppercase" >Action</th>
+        <th class="text-uppercase" >Annonce est Publier</th>
     </tr>
   </thead>
    @foreach($annonces as $annonce)
@@ -46,7 +46,7 @@
     <tr>
         <td>{{$annonce ->id}}</td>
         <td>{{$annonce ->title}}</td>
-        <td class="overflow-auto">{{substr($annonce ->description,0,250)}}</td>
+        <td>{{substr($annonce ->description,0,250)}}</td>
         <td><img src="/storage/{{$annonce->image1}}" class="img-thumbnail"><br><span>Prix :</span>{{$annonce ->price}} DHM</td>
         <td>{{$annonce ->category->category}}</td>
         <td>{{$annonce ->city->city}}</td>
@@ -59,9 +59,15 @@
              @method('DELETE')
          <button type="submit" width="150" class="btn btn-danger btn-sm mt-3">Supprimer</button>
         </form>
-         <a href="{{route('annonces.edit', $annonce->id)}}" width="150"  class="btn btn-info btn-sm mt-3">Editer</a>
+        @if(Auth::user()->is_admin)
+            <a href="{{route('annonces.edit', $annonce->id)}}" width="150"  class="btn btn-secondary btn-sm mt-3">approved</a>
+        @else
+
+            <a href="{{route('annonces.edit', $annonce->id)}}" width="150"  class="btn btn-info btn-sm mt-3">Editer</a>
+        @endif
         </div>
         </td>
+        <td class="text-center">{{$annonce ->is_approved}}</td>
     </tr>
 </tbody>
   @endforeach

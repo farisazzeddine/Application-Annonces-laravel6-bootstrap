@@ -23,7 +23,7 @@ class AnnonceController extends Controller
     public function accueil(){
     $categories=Category::all();
     $cities=City::all();
-    $annonces=Annonce::OrderBy('id','DESC')->paginate(10);
+    $annonces=Annonce::where('is_approved',1)->OrderBy('id','DESC')->paginate(10);
     return view('annonces.accueil', compact('annonces','categories','cities'))->with('i',(request()->input('page', 1) - 1) * 10);
     }
 
@@ -125,7 +125,7 @@ class AnnonceController extends Controller
      */
     public function show(Annonce $annonce)
     {
-        $annonces=Annonce::findOrFail($annonce->id);
+        $annonces=Annonce::where('is_approved',1)->findOrFail($annonce->id);
         return view('annonces.show', compact('annonces'));
     }
 
@@ -153,34 +153,49 @@ class AnnonceController extends Controller
      */
     public function update(Request $request, Annonce $annonce)
     {
-        $image_name = $request->hidden_image;
-        $image1 = $request->file('image1');
- if($image1 !='')
- {
-    $image_name = rand() . '.' . $image1->getClientOriginalExtension();
-    request()->image1->move(public_path('storage'), $image_name);
- }
- else
- {
-$request->validate([
-    'title'      =>  'required',
-    'description'=>  'required',
-    'city'       =>  'required',
-    'category'   =>  'required',
-    'prix'       =>  'required',
-    'approved'   =>  'required',
-]);
- }
- $article=array(
-    'title'       =>$request->title,
-    'description' =>$request->description,
-    'image1'      =>$image_name,
-    'price'       =>$request->prix,
-    'is_approved' =>$request->approved,
-    'category_id' =>$request->category,
-    'city_id'=> $request->city,
-);
-     Annonce::whereId($annonce->id)->update($article);
+
+    if(Auth::user()->is_admin){
+        $request->validate([
+            'approved'   =>  'required',
+        ]);
+        $article=array(
+
+            'is_approved' =>1,
+
+        );
+             Annonce::whereId($annonce->id)->update($article);
+    }else{
+
+
+            $image_name = $request->hidden_image;
+            $image1 = $request->file('image1');
+     if($image1 !='')
+     {
+        $image_name = rand() . '.' . $image1->getClientOriginalExtension();
+        request()->image1->move(public_path('storage'), $image_name);
+     }
+     else
+     {
+    $request->validate([
+        'title'      =>  'required',
+        'description'=>  'required',
+        'city'       =>  'required',
+        'category'   =>  'required',
+        'prix'       =>  'required',
+        'approved'   =>  'required',
+    ]);
+     }
+     $article=array(
+        'title'       =>$request->title,
+        'description' =>$request->description,
+        'image1'      =>$image_name,
+        'price'       =>$request->prix,
+        'is_approved' =>$request->approved,
+        'category_id' =>$request->category,
+        'city_id'     => $request->city,
+    );
+         Annonce::whereId($annonce->id)->update($article);
+    }
      return  redirect('/annonces')->with('success','ARTICLE MODIFIER AVEC SUCCÈS');
 
     }
@@ -201,12 +216,26 @@ $request->validate([
     public function search(){
         $categories=Category::all();
         $cities=City::all();
-         $catego = \Request::get('category');
         $search = \Request::get('search');
         $annonces = Annonce::where('title','LIKE','%'.$search.'%')->get();
          return view('annonces.search',compact('annonces','search','categories',
          'cities'));
 
+    }
+
+    public function searchByCategory($id) {
+        $categories=Category::all();
+        $cities=City::all();
+        $search = \Request::get('search');
+        $annonces = Annonce::where('category_id','=',$id)->get();
+        return view('annonces.search',compact('annonces','search','categories','cities'));
+    }
+    public function searchBycity($id) {
+        $categories=Category::all();
+        $cities=City::all();
+        $search = \Request::get('search');
+        $annonces = Annonce::where('city_id','=',$id)->get();
+        return view('annonces.search',compact('annonces','search','categories','cities'));
     }
 
 }

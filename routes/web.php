@@ -23,5 +23,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('annonces', 'AnnonceController');
 Route::get('/', 'AnnonceController@accueil')->name('annonces.accueil');
 Route::any('/search','AnnonceController@search')->name('annonces.search');
+Route::any('/category/{id}','AnnonceController@searchByCategory')->name('annonces.searchByCategory');
+Route::any('/city/{id}','AnnonceController@searchBycity')->name('annonces.searchBycity');
 
 /*   */
