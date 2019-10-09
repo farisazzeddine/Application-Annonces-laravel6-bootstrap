@@ -30,15 +30,15 @@
 <table class="table table-hover table-responsive-md">
   <thead>
     <tr>
-        <th class="text-uppercase" width="50">#</th>
+        <th class="text-uppercase" width="20">#</th>
         <th class="text-uppercase" width="150">titre</th>
         <th class="text-uppercase" width="300">description</th>
         <th class="text-uppercase" width="300">images</th>
         <th class="text-uppercase" width="150">categorie</th>
         <th class="text-uppercase" width="150">ville</th>
-        <th class="text-uppercase" >utilisateur</th>
+        <th class="text-uppercase" width="300">utilisateur</th>
         <th class="text-uppercase" >Action</th>
-        <th class="text-uppercase" >Annonce est Publier</th>
+        <th class="text-uppercase" >Annonce</th>
     </tr>
   </thead>
    @foreach($annonces as $annonce)
@@ -67,7 +67,13 @@
         @endif
         </div>
         </td>
-        <td class="text-center">{{$annonce ->is_approved}}</td>
+        <td class="text-center">
+          @if($annonce ->is_approved === 1)
+              Annonce est publier
+          @elseif($annonce ->is_approved === 0)  
+          Annonce Non publier
+          @endif
+        </td>
     </tr>
 </tbody>
   @endforeach
