@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
+<div id="pic" class="container col-md-12" >
 <div class="container pt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -70,4 +71,18 @@
         </div>
     </div>
 </div>
+</div>
+<div >
+
+</div>
+<style>
+
+#pic{
+    background: repeating-linear-gradient(135deg, 	#000000 0%, #000000 25%, #C0C0C0 25%, #C0C0C0 50%);
+    width: 100%;
+    height: 100vh;
+    
+
+}
+</style>
 @endsection

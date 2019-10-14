@@ -70,14 +70,14 @@
             </nav>
 
 </header>
-<div class="col-lg-12 col-md-12 pt-5 pb-5">
+<div class="col-lg-12 col-md-12 pt-5 pb-2">
 <section >
     @yield('content')
 </section>
 
 </div>
 <!-- Footer -->
-      <footer class="py-5 bg-dark">
+      <footer id="footer" class="py-5 bg-dark">
         
           <div class="container text-white">
             <p class="m-0 text-center">Copyright © Azzeddine Faris {{date('Y')}}</p> 
@@ -85,8 +85,7 @@
           <!-- /.container -->
         </footer>
 <style>
-footer {
-    
+#footer {
     height: 100px;
     bottom: 0;
     width: 100%;

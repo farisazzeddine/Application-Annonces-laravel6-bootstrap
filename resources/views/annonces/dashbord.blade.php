@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('content')
-<main class="pt-5 pb-3">
+<main id="pic" class="card-header pt-5 pb-3">
 <div >
 
         <br>
@@ -27,7 +27,7 @@
 <br>
 <div class="col-md-12 col-md-offset-1">
 
-<table class="table table-hover table-responsive-md">
+<table class="table table-hover table-responsive-md card-header">
   <thead>
     <tr>
         <th class="text-uppercase" width="20">#</th>
@@ -86,6 +86,15 @@
 </main>
 
 
+<style>
 
+  #pic{
+      background: repeating-linear-gradient(135deg, 	#C0C0C0 0%, #C0C0C0 25%, #fff 25%, #fff 50%);
+      
+      width: 100%;
+      height: 100vh;
+      
+  
+  }
 
 @endsection
