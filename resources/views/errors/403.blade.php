@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
 
-<div class="container pb-5 pt-5">
+<div id="pic" class="container pb-5 pt-5">
     <div class="row">
         <div class="col-md-12 col-md-offset-2 text-center">
              <h2>Cette page est non autoriser</h2>
@@ -9,4 +9,11 @@
         </div>
     </div>
 </div>
+<style>
+    #pic{
+        background: repeating-linear-gradient(135deg, 	#C0C0C0 0%, #C0C0C0 25%, #fff 25%, #fff 50%);
+        width: 100%;
+        height: 100vh;
+    }
+  </style>
 @endsection
