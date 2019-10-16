@@ -29,7 +29,7 @@
 #pic{
         background: repeating-linear-gradient(135deg, 	#000000 0%, #000000 25%, #C0C0C0 25%, #C0C0C0 50%);
         width: 100%;
-        height: 100vh;
+        height: 100%;
         }
   </style>
 @endsection
